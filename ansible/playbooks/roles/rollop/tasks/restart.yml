@@ -1,0 +1,55 @@
+---
+- name: restart l1 service
+  ansible.builtin.systemd:
+    name: l1
+    state: restarted
+  when: "'l1' in group_names"
+  tags:
+    - l1
+    - restart
+
+- name: Wait for geth port
+  ansible.builtin.wait_for:
+    port: "{{ l1_geth_port }}"
+    delay: 10
+  when: "'l1' in group_names"
+  tags:
+    - l1
+    - restart
+
+- name: Deploy l2 contracts + create genesis
+  ansible.builtin.shell:
+    chdir: /roll-op
+    cmd: ./rollop --no-ansi-esc --config /roll-op/config.toml deploy-l2
+  when: "'l2_engine' in group_names"
+  tags:
+    - l2
+    - restart
+
+- name: Restart l2 service
+  ansible.builtin.systemd:
+    name: "l2-{{ item }}"
+    state: restarted
+  loop:
+    - engine
+    - sequencer
+    - proposer
+    - batcher
+  when: "'l2_' + item in group_names"
+  tags:
+    - l2
+    - restart
+
+- name: Wait for l2 service port
+  ansible.builtin.wait_for:
+    port: "{{ l2_service_ports[item] }}"
+    delay: 10
+  loop:
+    - engine
+    - sequencer
+    - proposer
+    - batcher
+  when: "'l2_' + item in group_names"
+  tags:
+    - l2
+    - restart

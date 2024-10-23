@@ -1,0 +1,49 @@
+---
+- name: update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  when: ansible_facts['distribution'] in ['Debian', 'Ubuntu']
+  tags:
+    - setup
+
+- name: install system dependencies
+  ansible.builtin.apt:
+    pkg:
+      - acl
+      - apt-transport-https
+      - build-essential
+      - ca-certificates
+      - curl
+      - git
+      - jq
+      - python3-pip
+      - python3-setuptools
+      - software-properties-common
+  when: ansible_facts['distribution'] in ['Debian', 'Ubuntu']
+  tags:
+    - setup
+
+- name: clone roll-op
+  ansible.builtin.git:
+    force: true
+    repo: https://github.com/0xFableOrg/roll-op.git
+    dest: /roll-op
+    version: feature/ansible
+  tags:
+    - setup
+
+- name: run setup
+  ansible.builtin.shell:
+    chdir: /roll-op
+    cmd: ./rollop --no-ansi-esc setup --yes
+    creates: /roll-op/optimism
+  tags:
+    - setup
+
+- name: copy config
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../config.toml"
+    dest: /roll-op/config.toml
+    mode: 0644
+  tags:
+    - setup

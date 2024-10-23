@@ -1,0 +1,13 @@
+[Unit]
+Description=Roll-OP Layer 2 {{ l2_service }}
+
+[Service]
+Type=simple
+Restart=always
+WorkingDirectory=/roll-op
+Nice=-20
+ExecStart=/roll-op/rollop --no-ansi-esc --config /roll-op/config.toml l2-{{ l2_service }}
+TimeoutSec=900
+
+[Install]
+WantedBy=default.target

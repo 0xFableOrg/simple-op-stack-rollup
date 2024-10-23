@@ -1,0 +1,42 @@
+---
+- name: Setup rollop
+  hosts: unique_hosts
+  become: true
+  roles:
+    - role: rollop
+      become: true
+
+- name: Deploy l1
+  hosts: l1
+  become: true
+  roles:
+    - role: rollop
+      become: true
+
+- name: Deploy l2-engine
+  hosts: l2-engine
+  become: true
+  roles:
+    - role: rollop
+      become: true
+
+- name: Deploy l2-sequencer
+  hosts: l2-sequencer
+  become: true
+  roles:
+    - role: rollop
+      become: true
+
+- name: Deploy l2-proposer
+  hosts: l2-proposer
+  become: true
+  roles:
+    - role: rollop
+      become: true
+
+- name: Deploy l2-batcher
+  hosts: l2-batcher
+  become: true
+  roles:
+    - role: rollop
+      become: true

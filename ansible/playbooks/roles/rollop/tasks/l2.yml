@@ -1,0 +1,28 @@
+---
+- name: Set l2_service fact
+  ansible.builtin.set_fact:
+    l2_service: "{{ item }}"
+  loop:
+    - engine
+    - sequencer
+    - proposer
+    - batcher
+  when: "'l2_' + item in group_names"
+  tags:
+    - l2
+
+- name: Write systemd file for l2 service
+  ansible.builtin.template:
+    src: l2.service.j2
+    dest: "/etc/systemd/system/l2-{{ l2_service }}.service"
+    mode: 0644
+  tags:
+    - l2
+
+- name: Enable l2 service
+  ansible.builtin.systemd:
+    name: "l2-{{ l2_service }}"
+    daemon-reload: true
+    enabled: true
+  tags:
+    - l2

@@ -1,0 +1,23 @@
+---
+- name: setup roll-op
+  include_tasks: setup.yml
+  when: "'unique_hosts' in group_names"
+  tags:
+    - setup
+
+- name: configure l1
+  include_tasks: l1.yml
+  when: "'l1' in group_names"
+  tags:
+    - l1
+
+- name: configure l2
+  include_tasks: l2.yml
+  when: "'l2' in group_names"
+  tags:
+    - l2
+
+- name: (re)start l1 and l2
+  include_tasks: restart.yml
+  tags:
+    - restart
