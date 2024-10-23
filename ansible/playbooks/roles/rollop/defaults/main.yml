@@ -1,0 +1,7 @@
+---
+l1_geth_port: 8545
+l2_service_ports:
+  engine: 9545
+  sequencer: 7545
+  proposer: 5545
+  batcher: 6545

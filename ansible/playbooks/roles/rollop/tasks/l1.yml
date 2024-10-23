@@ -1,0 +1,16 @@
+---
+- name: write l1 systemd file
+  ansible.builtin.template:
+    src: l1.service.j2
+    dest: /etc/systemd/system/l1.service
+    mode: 0644
+  tags:
+    - l1
+
+- name: enable l1 service
+  ansible.builtin.systemd:
+    name: l1
+    daemon-reload: true
+    enabled: true
+  tags:
+    - l1
