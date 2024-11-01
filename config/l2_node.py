@@ -58,6 +58,11 @@ class L2NodeConfig:
 
         # === P2P Options ===
 
+        self.l2_node_p2p_static_peers = ""
+        """
+        Comma-separated list of bootnodes to connect to.
+        """
+
         self.l2_node_p2p_enabled = False
         """
         Whether to enable P2P (peer discovery + block gossip — False by default).
