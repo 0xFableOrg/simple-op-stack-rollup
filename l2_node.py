@@ -51,6 +51,7 @@ def start(config: Config, sequencer: bool = True):
         # https://github.com/ethereum-optimism/optimism/blob/develop/op-node/flags/p2p_flags.go
 
         *(["--p2p.disable"] if not config.l2_node_p2p_enabled else [
+            f"--p2p.static={config.l2_node_p2p_static_peers}",
             f"--p2p.listen.ip={config.l2_node_p2p_listen_addr}",
             f"--p2p.listen.tcp={config.l2_node_p2p_tcp_listen_port}",
             f"--p2p.listen.udp={config.l2_node_p2p_udp_listen_port}",

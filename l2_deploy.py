@@ -186,7 +186,7 @@ def _generate_l2_genesis(config: Config):
         print("Generating L2 genesis and rollup configs")
         try:
             log_file = f"{config.logs_dir}/generate_l2_genesis.log"
-            l2_allocs_path = os.path.join(config.artifacts_dir, 'allocs-l2.json')
+            l2_allocs_path = os.path.join(config.artifacts_dir, 'allocs-l2-granite.json')
             lib.run_roll_log("generate l2 genesis and rollup configs", [
                 'go', 'run', 'cmd/main.go', 'genesis', 'l2',
                 '--l1-rpc', 'http://localhost:8545',

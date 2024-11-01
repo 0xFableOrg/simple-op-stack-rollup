@@ -132,6 +132,10 @@ p.command(
     help="starts a local L2 node (op-node) in sequencer mode")
 
 p.command(
+    "l2-node",
+    help="starts a local L2 node (op-node) in non-sequencer mode")
+
+p.command(
     "l2-batcher",
     help="starts a local L2 transaction batcher")
 
@@ -391,6 +395,13 @@ def main():
                 l2_node.clean(config)
 
             l2_node.start(config, sequencer=True)
+            wait(config)
+
+        elif state.args.command == "l2-node":
+            if state.args.clean_first:
+                l2_node.clean(config)
+
+            l2_node.start(config, sequencer=False)
             wait(config)
 
         elif state.args.command == "l2-batcher":
